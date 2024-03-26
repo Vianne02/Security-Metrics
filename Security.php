@@ -123,10 +123,12 @@ $jsonSecurityCurrentData = json_encode($SecurityCurrentData);
                         </form>
                     </div>
                     <div class="col-md-8 table-section">
-                        <h2>Participant Data</h2>
+                        <h2>Security Incidents</h2>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#graphModal">
                           Show Graph
                         </button>
+    <a href="generateSec.php" class="btn btn-secondary">Generate report</a>
+
                         <div class="scrollable-table">
                             <table class="table">
                                 <thead>
