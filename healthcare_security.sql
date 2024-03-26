@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 18, 2024 at 04:06 PM
+-- Generation Time: Mar 25, 2024 at 09:04 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -54,9 +54,9 @@ INSERT INTO `behaviour` (`id`, `subject_matter`, `incidents_before`, `incidents_
 
 CREATE TABLE `business_impact_analysis` (
   `id` int(11) NOT NULL,
-  `incidents_before` int(11) NOT NULL,
-  `incidents_after` int(11) NOT NULL,
-  `incident_response_rating` int(11) DEFAULT NULL CHECK (`incident_response_rating` between 1 and 5),
+  `incidents_before` varchar(100) NOT NULL,
+  `incidents_after` varchar(100) NOT NULL,
+  `incident_response_rating` varchar(100) DEFAULT NULL,
   `continuity_plan_effectiveness` int(11) DEFAULT NULL CHECK (`continuity_plan_effectiveness` between 1 and 5),
   `date_recorded` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -66,8 +66,10 @@ CREATE TABLE `business_impact_analysis` (
 --
 
 INSERT INTO `business_impact_analysis` (`id`, `incidents_before`, `incidents_after`, `incident_response_rating`, `continuity_plan_effectiveness`, `date_recorded`) VALUES
-(1, 10, 10, 1, 2, '2024-02-17 11:24:52'),
-(2, 10, 5, 3, 5, '2024-02-18 15:01:35');
+(7, 'vejve', 'eve', 'er', 2, '2024-03-25 17:59:59'),
+(8, 'vjfdvve', 'ejrvjeroe', 'ergerog', 5, '2024-03-25 18:00:14'),
+(9, 'vejfe9fj', 'jnejifne', 'nein', 5, '2024-03-25 18:00:39'),
+(10, 'vejfe9fj', 'jnejifne', 'nein', 5, '2024-03-25 18:01:27');
 
 -- --------------------------------------------------------
 
@@ -124,7 +126,8 @@ INSERT INTO `knowledge` (`id`, `knowledge_before`, `knowledge_after`, `result`, 
 (31, 3, 1, '-2', 'Depreciated', '2024-02-16 16:35:08'),
 (32, 1, 3, '2', 'Improved', '2024-02-16 16:36:39'),
 (33, 3, 5, '2', 'Improved', '2024-02-18 17:53:20'),
-(34, 5, 2, '-3', 'Depreciated', '2024-02-18 17:53:38');
+(34, 5, 2, '-3', 'Depreciated', '2024-02-18 17:53:38'),
+(35, 2, 5, '3', 'Improved', '2024-03-25 22:13:51');
 
 -- --------------------------------------------------------
 
@@ -174,7 +177,12 @@ INSERT INTO `security_incidents` (`id`, `security_last`, `security_current`, `re
 (9, 10, 20, 10, 'Reduced', '2024-02-16 14:33:09'),
 (10, 20, 5, -15, 'Improved', '2024-02-16 14:33:25'),
 (11, 5, 20, 15, 'Reduced', '2024-02-18 17:58:19'),
-(12, 15, 10, -5, 'Improved', '2024-02-18 17:58:31');
+(12, 15, 10, -5, 'Improved', '2024-02-18 17:58:31'),
+(13, 10, 20, 10, 'Reduced', '2024-03-25 21:30:07'),
+(14, 20, 5, -15, 'Improved', '2024-03-25 21:34:43'),
+(15, 5, 5, 0, 'Stagnant', '2024-03-25 21:39:16'),
+(16, 5, 10, 5, 'Reduced', '2024-03-25 21:46:33'),
+(17, 10, 5, -5, 'Improved', '2024-03-25 21:46:59');
 
 -- --------------------------------------------------------
 
@@ -223,7 +231,8 @@ INSERT INTO `users` (`id`, `username`, `password`) VALUES
 (2, 'Vianne', '$2y$10$yF//l1TYX73SM0.K2cG1Vut7wlAnOsRnCn.F1Q1ssq9I0HqqQPSSO'),
 (3, 'kels', '$2y$10$ueYGeJ24bWSD6aJsISTXBet9V1.tKeipBNrAYDDGekufnbnLCg3p6'),
 (4, 'fade', '$2y$10$M6/0RWRA2W3cjx1FpPmnReRwKaQ131.HT/rRpEt6B6Qy3v.1cSFTa'),
-(5, 'Vee', '$2y$10$JXV4En90Ql2J4Y0NHPUjbeHtcqFoPL489M7XC9rZg8iiHEGT3eESe');
+(5, 'Vee', '$2y$10$JXV4En90Ql2J4Y0NHPUjbeHtcqFoPL489M7XC9rZg8iiHEGT3eESe'),
+(6, 'Vianne2', '$2y$10$9TtwW5vZv3jhi8u4NWQ9m.Nhm6aBwpTqmtE1YA6dg1e8LyoOqoHbW');
 
 --
 -- Indexes for dumped tables
@@ -291,7 +300,7 @@ ALTER TABLE `behaviour`
 -- AUTO_INCREMENT for table `business_impact_analysis`
 --
 ALTER TABLE `business_impact_analysis`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `feedback`
@@ -303,7 +312,7 @@ ALTER TABLE `feedback`
 -- AUTO_INCREMENT for table `knowledge`
 --
 ALTER TABLE `knowledge`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `risk_management`
@@ -315,7 +324,7 @@ ALTER TABLE `risk_management`
 -- AUTO_INCREMENT for table `security_incidents`
 --
 ALTER TABLE `security_incidents`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `training_participants`
@@ -327,7 +336,7 @@ ALTER TABLE `training_participants`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
