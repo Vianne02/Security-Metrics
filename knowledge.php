@@ -123,6 +123,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <button type="button" class="btn btn-info mb-3" data-bs-toggle="modal" data-bs-target="#graphModal">
                             View Knowledge Graph
                         </button>
+                        <a href="genKnow.php" class="btn btn-secondary">Generate report</a>
+
                         <div class="scrollable-table">
                             <table class="table">
                                 <thead>

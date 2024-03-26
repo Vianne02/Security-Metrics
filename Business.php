@@ -8,26 +8,35 @@ if (!isset($_SESSION["loggedin"])) {
 }
 
 // Initialize variables
-$incidents_before = $incidents_after = $incident_response_rating = $continuity_plan_effectiveness = 0;
+$incidents_before = $incidents_after = $incident_response_rating = $continuity_plan_effectiveness = "";
+$error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $incidents_before = $_POST['incidents_before'];
-    $incidents_after = $_POST['incidents_after'];
-    $incident_response_rating = $_POST['incident_response_rating'];
-    $continuity_plan_effectiveness = $_POST['continuity_plan_effectiveness'];
+    // Validate form data
+    $incidents_before = trim($_POST['incidents_before']);
+    $incidents_after = trim($_POST['incidents_after']);
+    $incident_response_rating = trim($_POST['incident_response_rating']);
+    $continuity_plan_effectiveness = trim($_POST['continuity_plan_effectiveness']);
 
-    // Insert data into the database
-    if ($stmt = $link->prepare("INSERT INTO business_impact_analysis (incidents_before, incidents_after, incident_response_rating, continuity_plan_effectiveness) VALUES (?, ?, ?, ?)")) {
-        $stmt->bind_param("iiii", $incidents_before, $incidents_after, $incident_response_rating, $continuity_plan_effectiveness);
-
-        if ($stmt->execute()) {
-            echo "<script>alert('Data submitted successfully.');</script>";
-        } else {
-            echo "<script>alert('Oops! Something went wrong. Please try again later.');</script>";
-        }
-        $stmt->close();
+    // Check if any field is empty
+    if (empty($incidents_before) || empty($incidents_after) || empty($continuity_plan_effectiveness)) {
+        $error = "All fields are required.";
     } else {
-        echo "<script>alert('Database connection error.');</script>";
+        // Insert data into the database
+        if ($stmt = $link->prepare("INSERT INTO business_impact_analysis (incidents_before, incidents_after, incident_response_rating, continuity_plan_effectiveness) VALUES (?, ?, ?, ?)")) {
+            $stmt->bind_param("sssi", $incidents_before, $incidents_after, $incident_response_rating, $continuity_plan_effectiveness);
+
+            if ($stmt->execute()) {
+                echo "<script>alert('Data submitted successfully.');</script>";
+                // Clear form fields after successful submission
+                $incidents_before = $incidents_after = $incident_response_rating = $continuity_plan_effectiveness = "";
+            } else {
+                $error = "Oops! Something went wrong. Please try again later.";
+            }
+            $stmt->close();
+        } else {
+            $error = "Database connection error.";
+        }
     }
 }
 ?>
@@ -75,22 +84,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="container py-3 d-flex justify-content-between"> <!-- Adjusted layout -->
                 <div class="form-section">
                     <h2>Business Impact Analysis Form</h2>
+                    <?php if (!empty($error)): ?>
+                        <div class="alert alert-danger" role="alert"><?php echo $error; ?></div>
+                    <?php endif; ?>
                     <form method="post">
                         <div class="mb-3">
-                            <label for="incidents_before" class="form-label">Incidents Before Continuity Plan</label>
-                            <input type="number" class="form-control" id="incidents_before" name="incidents_before" required>
+                            <label for="incidents_before" class="form-label">Potential disruption</label>
+                            <input type="text" class="form-control" id="incidents_before" name="incidents_before" value="<?php echo htmlspecialchars($incidents_before); ?>" required>
                         </div>
                         <div class="mb-3">
-                            <label for="incidents_after" class="form-label">Incidents After Continuity Plan</label>
-                            <input type="number" class="form-control" id="incidents_after" name="incidents_after" required>
+                            <label for="incidents_after" class="form-label">Security Controls</label>
+                            <input type="text" class="form-control" id="incidents_after" name="incidents_after" value="<?php echo htmlspecialchars($incidents_after); ?>" required>
                         </div>
                         <div class="mb-3">
-                            <label for="incident_response_rating" class="form-label">Incident Response (1-5)</label>
-                            <input type="number" class="form-control" id="incident_response_rating" name="incident_response_rating" min="1" max="5" required>
+                            <label for="incident_response_rating" class="form-label">Continuity plan</label>
+                            <input type="text" class="form-control" id="incident_response_rating" name="incident_response_rating" value="<?php echo htmlspecialchars($incident_response_rating); ?>">
                         </div>
                         <div class="mb-3">
                             <label for="continuity_plan_effectiveness" class="form-label">Plan Effectiveness (1-5)</label>
-                            <input type="number" class="form-control" id="continuity_plan_effectiveness" name="continuity_plan_effectiveness" min="1" max="5" required>
+                            <input type="number" class="form-control" id="continuity_plan_effectiveness" name="continuity_plan_effectiveness" value="<?php echo htmlspecialchars($continuity_plan_effectiveness); ?>" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <a href="dashboard.php" class="btn btn-outline-secondary">Go to Dashboard</a>
@@ -102,9 +114,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Incidents Before</th>
-                                    <th scope="col">Incidents After</th>
-                                    <th scope="col">Response Rating</th>
+                                    <th scope="col">Potential disruption</th>
+                                    <th scope="col">Security Controls</th>
+                                    <th scope="col">Continuity plan</th>
                                     <th scope="col">Plan Effectiveness</th>
                                     <th scope="col">Date Recorded</th>
                                 </tr>
@@ -135,11 +147,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </table>
                     </div>
                 </div>
+            </
             </div>
-        </main>
+                </div>
+            </main>
+        </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -127,6 +127,7 @@ $jsonParticipantsCurrentData = json_encode($participantsCurrentData);
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#graphModal">
                           Show Graph
                         </button>
+                        <a href="participantreport.php" class="btn btn-secondary">Generate report</a>
                         <div class="scrollable-table">
                             <table class="table">
                                 <thead>
